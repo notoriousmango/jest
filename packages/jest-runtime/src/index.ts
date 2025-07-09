@@ -1488,6 +1488,15 @@ export default class Runtime {
         return module;
       }
     } else if (options.paths) {
+      const stubModule = this._resolver.resolveStubModuleName(
+        from,
+        moduleName,
+        {conditions: this.cjsConditions},
+      );
+      if (stubModule) {
+        return stubModule;
+      }
+
       for (const p of options.paths) {
         const absolutePath = path.resolve(from, '..', p);
         const module = this._resolver.resolveModuleFromDirIfExists(

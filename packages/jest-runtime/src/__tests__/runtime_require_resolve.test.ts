@@ -91,6 +91,21 @@ describe('Runtime require.resolve', () => {
     );
   });
 
+  it('resolves a module path with moduleNameMapper and options.paths', async () => {
+    const runtime = await createRuntime(__filename, {
+      moduleNameMapper: {
+        '^testMapped/(.*)': '<rootDir>/mapped_dir/$1',
+      },
+    });
+    const resolved = runtime.requireModule(
+      runtime.__mockRootPath,
+      './resolve_mapped_with_paths.js',
+    );
+    expect(resolved).toEqual(
+      require.resolve('./test_root/mapped_dir/moduleInMapped.js'),
+    );
+  });
+
   describe('with the jest-resolve-outside-vm-option', () => {
     it('forwards to the real Node require in an internal context', async () => {
       const runtime = await createRuntime(__filename);
