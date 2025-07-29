@@ -530,3 +530,31 @@ export const createTestCaseStartInfo = (
     title,
   };
 };
+
+const getDescribeBlockNamesPath = (
+  describeBlock: Circus.DescribeBlock,
+): Circus.TestNamesPath => {
+  const titles = [];
+  let parent: Circus.DescribeBlock | undefined = describeBlock;
+  do {
+    titles.unshift(parent.name);
+  } while ((parent = parent.parent));
+
+  return titles;
+};
+
+export const createDescribeBlockStartInfo = (
+  describeBlock: Circus.DescribeBlock,
+): Circus.DescribeBlockStartInfo => {
+  const describeBlockPath = getDescribeBlockNamesPath(describeBlock);
+  const {ancestorTitles, fullName, title} =
+    resolveTestCaseStartInfo(describeBlockPath);
+
+  return {
+    ancestorTitles,
+    fullName,
+    mode: describeBlock.mode,
+    startedAt: Date.now(),
+    title,
+  };
+};

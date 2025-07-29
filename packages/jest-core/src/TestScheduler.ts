@@ -272,6 +272,26 @@ class TestScheduler {
                     this._dispatcher.onTestCaseResult(test, testCaseResult);
                   },
                 ),
+                testRunner.on(
+                  'describe-block-start',
+                  ([testPath, describeBlockStartInfo]) => {
+                    const test: Test = {context, path: testPath};
+                    this._dispatcher.onDescribeBlockStart(
+                      test,
+                      describeBlockStartInfo,
+                    );
+                  },
+                ),
+                testRunner.on(
+                  'describe-block-finish',
+                  ([testPath, describeBlockStartInfo]) => {
+                    const test: Test = {context, path: testPath};
+                    this._dispatcher.onDescribeBlockFinish(
+                      test,
+                      describeBlockStartInfo,
+                    );
+                  },
+                ),
               ];
 
               await testRunner.runTests(tests, watcher, testRunnerOptions);

@@ -90,4 +90,19 @@ describe('Custom Reporters Integration on jest-circus', () => {
 
     expect(stdout).toMatchSnapshot();
   });
+
+  test('push describe block start and finish', () => {
+    const {stdout} = runJest('custom-reporters', [
+      '--config',
+      JSON.stringify({
+        reporters: [
+          'default',
+          '<rootDir>/reporters/DescribeBlockStartReporter.js',
+        ],
+      }),
+      'nestedDescribe.test.js',
+    ]);
+
+    expect(stdout).toMatchSnapshot();
+  });
 });

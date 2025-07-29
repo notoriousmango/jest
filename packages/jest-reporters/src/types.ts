@@ -42,6 +42,21 @@ export interface Reporter {
     test: Test,
     testCaseResult: TestCaseResult,
   ) => Promise<void> | void;
+  /**
+   * Called before running a describe block
+   * Not called for `skipped` describe blocks
+   */
+  readonly onDescribeBlockStart?: (
+    test: Test,
+    describeBlockStartInfo: Circus.DescribeBlockStartInfo,
+  ) => Promise<void> | void;
+  /**
+   * Called after running a describe block
+   */
+  readonly onDescribeBlockFinish?: (
+    test: Test,
+    describeBlockStartInfo: Circus.DescribeBlockStartInfo,
+  ) => Promise<void> | void;
   readonly onRunStart?: (
     results: AggregatedResult,
     options: ReporterOnStartOptions,

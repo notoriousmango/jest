@@ -208,6 +208,8 @@ export type TestEvents = {
   'test-file-failure': [Test, SerializableError];
   'test-case-start': [string, Circus.TestCaseStartInfo];
   'test-case-result': [string, TestCaseResult];
+  'describe-block-start': [string, Circus.DescribeBlockStartInfo];
+  'describe-block-finish': [string, Circus.DescribeBlockStartInfo];
 };
 
 export type TestFileEvent<T extends keyof TestEvents = keyof TestEvents> = (

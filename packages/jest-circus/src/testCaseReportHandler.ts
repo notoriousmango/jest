@@ -7,7 +7,9 @@
 
 import type {TestFileEvent} from '@jest/test-result';
 import type {Circus} from '@jest/types';
+import {ROOT_DESCRIBE_BLOCK_NAME} from './state';
 import {
+  createDescribeBlockStartInfo,
   createTestCaseStartInfo,
   makeSingleTestResult,
   parseSingleTestResult,
@@ -27,6 +29,32 @@ const testCaseReportHandler =
         const testResult = makeSingleTestResult(event.test);
         const testCaseResult = parseSingleTestResult(testResult);
         sendMessageToJest('test-case-result', [testPath, testCaseResult]);
+        break;
+      }
+      case 'run_describe_start': {
+        if (event.describeBlock.name === ROOT_DESCRIBE_BLOCK_NAME) {
+          break;
+        }
+        const describeBlockStartInfo = createDescribeBlockStartInfo(
+          event.describeBlock,
+        );
+        sendMessageToJest('describe-block-start', [
+          testPath,
+          describeBlockStartInfo,
+        ]);
+        break;
+      }
+      case 'run_describe_finish': {
+        if (event.describeBlock.name === ROOT_DESCRIBE_BLOCK_NAME) {
+          break;
+        }
+        const describeBlockStartInfo = createDescribeBlockStartInfo(
+          event.describeBlock,
+        );
+        sendMessageToJest('describe-block-finish', [
+          testPath,
+          describeBlockStartInfo,
+        ]);
         break;
       }
     }

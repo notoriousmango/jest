@@ -199,6 +199,14 @@ export type TestCaseStartInfo = {
   startedAt?: number | null;
 };
 
+export type DescribeBlockStartInfo = {
+  ancestorTitles: Array<string>;
+  fullName: string;
+  mode: BlockMode;
+  title: string;
+  startedAt?: number | null;
+};
+
 export type TestResult = {
   duration?: number | null;
   errors: Array<FormattedError>;

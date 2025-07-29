@@ -94,6 +94,28 @@ export default class ReporterDispatcher {
     }
   }
 
+  async onDescribeBlockStart(
+    test: Test,
+    describeBlockStartInfo: Circus.DescribeBlockStartInfo,
+  ): Promise<void> {
+    for (const reporter of this._reporters) {
+      if (reporter.onDescribeBlockStart) {
+        await reporter.onDescribeBlockStart(test, describeBlockStartInfo);
+      }
+    }
+  }
+
+  async onDescribeBlockFinish(
+    test: Test,
+    describeBlockStartInfo: Circus.DescribeBlockStartInfo,
+  ): Promise<void> {
+    for (const reporter of this._reporters) {
+      if (reporter.onDescribeBlockFinish) {
+        await reporter.onDescribeBlockFinish(test, describeBlockStartInfo);
+      }
+    }
+  }
+
   async onRunComplete(
     testContexts: Set<TestContext>,
     results: AggregatedResult,

@@ -13,6 +13,7 @@ import type {
   TestContext,
   TestResult,
 } from '@jest/test-result';
+import type {Circus} from '@jest/types';
 import {isInteractive, preRunMessage} from 'jest-util';
 import type {Reporter, ReporterOnStartOptions} from './types';
 
@@ -34,6 +35,16 @@ export default class BaseReporter implements Reporter {
 
   /* eslint-disable @typescript-eslint/no-empty-function */
   onTestCaseResult(_test: Test, _testCaseResult: TestCaseResult): void {}
+
+  onDescribeBlockStart(
+    _test: Test,
+    _describeBlockStartInfo: Circus.DescribeBlockStartInfo,
+  ): void {}
+
+  onDescribeBlockFinish(
+    _test: Test,
+    _describeBlockStartInfo: Circus.DescribeBlockStartInfo,
+  ): void {}
 
   onTestResult(
     _test?: Test,
