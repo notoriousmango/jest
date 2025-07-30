@@ -1170,6 +1170,27 @@ test('prepareState prepares a valid state', () => {
 
 The `expect.hasAssertions()` call ensures that the `prepareState` callback actually gets called.
 
+#### Interaction with `expect.assertions(0)`
+
+If you call `expect.assertions(0)` in the same test as `expect.hasAssertions()`, the `expect.assertions(0)` will take precedence and the test will pass even if no assertions are made. This allows you to have `expect.hasAssertions()` in a `beforeEach()` hook while still being able to opt out individual tests that legitimately expect no assertions:
+
+```js
+describe('my tests', () => {
+  beforeEach(() => {
+    expect.hasAssertions();
+  });
+
+  test('test with assertions', () => {
+    expect(true).toBe(true);
+  });
+
+  test('test with no assertions', () => {
+    expect.assertions(0);
+    // This test passes even though hasAssertions() was called in beforeEach
+  });
+});
+```
+
 ## Extend Utilities
 
 ### `expect.addEqualityTesters(testers)`

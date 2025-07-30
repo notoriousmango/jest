@@ -45,6 +45,54 @@ describe('.hasAssertions()', () => {
   it('hasAssertions not leaking to global state', () => {});
 });
 
+describe('interaction between .assertions(0) and .hasAssertions()', () => {
+  it('assertions(0) should override hasAssertions()', () => {
+    jestExpect.hasAssertions();
+    jestExpect.assertions(0);
+
+    const errors = jestExpect.extractExpectedAssertionsErrors();
+    expect(errors).toHaveLength(0);
+  });
+
+  it('assertions(0) should override hasAssertions() regardless of call order', () => {
+    jestExpect.assertions(0);
+    jestExpect.hasAssertions();
+
+    const errors = jestExpect.extractExpectedAssertionsErrors();
+    expect(errors).toHaveLength(0);
+  });
+
+  it('hasAssertions() should still fail when assertions(1) is set but no assertions made', () => {
+    jestExpect.hasAssertions();
+    jestExpect.assertions(1);
+
+    const errors = jestExpect.extractExpectedAssertionsErrors();
+    expect(errors).toHaveLength(2);
+    // First error should be from assertions(1)
+    expect(errors[0].expected).toBe('1');
+    expect(errors[0].actual).toBe('0');
+    // Second error should be from hasAssertions()
+    expect(errors[1].expected).toBe('at least one');
+    expect(errors[1].actual).toBe('none');
+  });
+
+  it('hasAssertions() should still fail when no assertions() is called', () => {
+    jestExpect.hasAssertions();
+
+    const errors = jestExpect.extractExpectedAssertionsErrors();
+    expect(errors).toHaveLength(1);
+    expect(errors[0].expected).toBe('at least one');
+    expect(errors[0].actual).toBe('none');
+  });
+
+  it('assertions(0) alone should pass with no assertions', () => {
+    jestExpect.assertions(0);
+
+    const errors = jestExpect.extractExpectedAssertionsErrors();
+    expect(errors).toHaveLength(0);
+  });
+});
+
 describe('numPassingAsserts', () => {
   it('verify the default value of numPassingAsserts', () => {
     const {numPassingAsserts} = jestExpect.getState();

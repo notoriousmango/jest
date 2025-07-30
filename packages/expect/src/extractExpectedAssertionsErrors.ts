@@ -61,7 +61,11 @@ const extractExpectedAssertionsErrors: Expect['extractExpectedAssertionsErrors']
         expected: expectedAssertionsNumber.toString(),
       });
     }
-    if (isExpectingAssertions && assertionCalls === 0) {
+    if (
+      isExpectingAssertions &&
+      assertionCalls === 0 &&
+      expectedAssertionsNumber !== 0
+    ) {
       const expected = EXPECTED_COLOR('at least one assertion');
       const received = RECEIVED_COLOR('received none');
 
