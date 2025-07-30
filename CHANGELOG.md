@@ -1,5 +1,9 @@
 ## main
 
+### Fixes
+
+- `[jest-circus]` Display individual error details for unhandled `AggregateError`s
+
 ## 30.0.5
 
 ### Features

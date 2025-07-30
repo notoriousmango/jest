@@ -13,6 +13,7 @@ import slash from 'slash';
 import StackUtils from 'stack-utils';
 import type {Status, TestCaseResult} from '@jest/test-result';
 import type {Circus, Global} from '@jest/types';
+import {formatExecError} from 'jest-message-util';
 import {
   ErrorWithStack,
   convertDescriptorToString,
@@ -438,8 +439,20 @@ const _getError = (
   return asyncError;
 };
 
-const getErrorStack = (error: Error): string =>
-  typeof error.stack === 'string' ? error.stack : error.message;
+const getErrorStack = (error: Error): string => {
+  if (error instanceof AggregateError) {
+    const config = {
+      rootDir: process.cwd(),
+      testMatch: [],
+    };
+    const options = {
+      noStackTrace: false,
+    };
+    return formatExecError(error, config, options, undefined, true, true);
+  }
+
+  return typeof error.stack === 'string' ? error.stack : error.message;
+};
 
 export const addErrorToEachTestUnderDescribe = (
   describeBlock: Circus.DescribeBlock,

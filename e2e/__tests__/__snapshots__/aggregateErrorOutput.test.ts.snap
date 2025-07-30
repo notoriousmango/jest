@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`AggregateError console output should display individual error details in console output for afterAll failures 1`] = `
+"FAIL __tests__/aggregateError.test.js
+
+
+  ● Test suite failed to run
+
+     AggregateError: Multiple errors occurred
+
+           9 |
+          10 | afterAll(() => {
+        > 11 |   return Promise.reject(new AggregateError(errors, 'Multiple errors occurred'));
+             |                         ^
+          12 | });
+          13 |
+          14 | it('should pass', () => {
+
+      at Object.<anonymous> (__tests__/aggregateError.test.js:11:25)
+          Errors contained in AggregateError:
+           simple error
+                2 |
+                3 | const errors = [
+              > 4 |   new Error('simple error'),
+                  |   ^
+                5 |   new TypeError('type error'),
+                6 |   new ReferenceError('reference error'),
+                7 |   new Error('another simple error'),
+      at Object.<anonymous> (__tests__/aggregateError.test.js:4:3)
+           TypeError: type error
+                3 | const errors = [
+                4 |   new Error('simple error'),
+              > 5 |   new TypeError('type error'),
+                  |   ^
+                6 |   new ReferenceError('reference error'),
+                7 |   new Error('another simple error'),
+                8 | ];
+      at Object.<anonymous> (__tests__/aggregateError.test.js:5:3)
+           ReferenceError: reference error
+                4 |   new Error('simple error'),
+                5 |   new TypeError('type error'),
+              > 6 |   new ReferenceError('reference error'),
+                  |   ^
+                7 |   new Error('another simple error'),
+                8 | ];
+                9 |
+      at Object.<anonymous> (__tests__/aggregateError.test.js:6:3)
+           another simple error
+                 5 |   new TypeError('type error'),
+                 6 |   new ReferenceError('reference error'),
+              >  7 |   new Error('another simple error'),
+                   |   ^
+                 8 | ];
+                 9 |
+                10 | afterAll(() => {
+      at Object.<anonymous> (__tests__/aggregateError.test.js:7:3)"
+`;
+
+exports[`AggregateError console output should handle AggregateError without main message 1`] = `
+"FAIL __tests__/noMessageAggregate.test.js
+
+
+  ● Test suite failed to run
+
+     AggregateError:
+
+          3 | afterAll(() => {
+          4 |   const errors = [new Error('Standalone error')];
+        > 5 |   return Promise.reject(new AggregateError(errors));
+            |                         ^
+          6 | });
+          7 |
+          8 | it('should pass', () => {
+
+      at Object.<anonymous> (__tests__/noMessageAggregate.test.js:5:25)
+          Errors contained in AggregateError:
+           Standalone error
+                2 |
+                3 | afterAll(() => {
+              > 4 |   const errors = [new Error('Standalone error')];
+                  |                   ^
+                5 |   return Promise.reject(new AggregateError(errors));
+                6 | });
+                7 |
+      at Object.<anonymous> (__tests__/noMessageAggregate.test.js:4:19)"
+`;
+
+exports[`AggregateError console output should handle an AggregateError with empty Error list 1`] = `
+"FAIL __tests__/emptyAggregate.test.js
+
+
+  ● Test suite failed to run
+
+     AggregateError: Empty error collection
+
+          2 |
+          3 | afterAll(() => {
+        > 4 |   return Promise.reject(new AggregateError([], 'Empty error collection'));
+            |                         ^
+          5 | });
+          6 |
+          7 | it('should pass', () => {
+
+      at Object.<anonymous> (__tests__/emptyAggregate.test.js:4:25)"
+`;
